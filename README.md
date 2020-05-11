@@ -30,10 +30,59 @@ this.bs.on('scroll', (ev) => {
 })
 ```
 
-### navbar部分
+### navbar部分和store
 ```
+  navbar的opacity依赖存放在store里的opacity去改变navbar的透明度，opacity以属性porps的形式传入navbar绑定到内联样式里以达到依赖关系。
+  betterscroll和navbar分别是两个封装组件，要实现两者的互动，我让betterscroll发起了对store里opacity和betterscroll差值的计算，得到最后的opacity。
+  最后，计算后的opacity对navbar的透明度进行改变。
+```
+```
+state: {  
+
+        opacity: 0  
+        
+    },  
+    
+    mutations: {  
+    
+        listenOpa: (state,payload) => {  
+        
+            console.log(payload)  
+            
+            if(state.opacity < 0) {  
+            
+                return state.opacity = 0;  
+                
+            }
+            else if(state.opacity > 1){  
+            
+                state.opacity = 1;   
+                
+            }  
+            
+            state.opacity += -payload;  
+            
+        },  
+        
+        zeroSet: (state) => {  
+        
+            state.opacity = 0;  
+            
+        }  
+        
+    },
+```
+### 注意
+  ***需要注意得是每次切换tabbar时都要需要重置opacity为0。所以我在router.beraeach里把store里得opacity置零***
+  ```
+  router.beforeEach((to,from,next) => {    
   
-```
+      store.commit('zeroSet')  
+      
+      next();  
+      
+  })
+  ```
 
 
 ## Project setup
