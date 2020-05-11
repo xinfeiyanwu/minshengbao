@@ -1,0 +1,9 @@
+// home
+import '@/mock/home/navSwiper.js'
+import '@/mock/home/ActiveSwiper.js'
+import '@/mock/home/STList.js'
+import '@/mock/FirstShade/FirstShade.js'
+// shopping
+import '@/mock/shopping/spTopData.js'
+import '@/mock/shopping/spItemData.js'
+import '@/mock/shopping/spBotData.js'

@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import HeadLine from '@/components/common/HeadLine.vue'
+import HeadLine from '@/components/common//line/HeadLine.vue'
 export default {
   name: 'Cart',
   components: {HeadLine},

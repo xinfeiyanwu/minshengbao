@@ -1,13 +1,13 @@
-import require from '@/api/require'
+import request from '@/api/request'
 
 export function NavSwiper () {
-    return require({url: '/NavSwiper'});
+    return request({url: '/home/NavSwiper'});
 }
 
 export function ActiveSwiper () {
-    return require({url: '/ActiveSwiper'});
+    return request({url: '/home/ActiveSwiper'});
 }
 
 export function STList () {
-    return require({url: '/STList'});
+    return request({url: '/home/STList'});
 }

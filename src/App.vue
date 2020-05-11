@@ -1,7 +1,8 @@
 <template>
   <div id="app">
-    
-   <keep-alive><router-view class="view"></router-view></keep-alive>
+    <NavBar />
+
+   <router-view class="view"></router-view>
 
     <Tabbar />
   </div>
@@ -10,9 +11,10 @@
 <script>
 import '@/assets/css/initCss.css'
 import Tabbar from '@/components/common/bar/Tabbar.vue'
+import NavBar from '@/components/common/bar/NavBar.vue'
 export default {
   name: 'App',
-  components: {Tabbar}
+  components: {Tabbar,NavBar}
 }
 </script>
 

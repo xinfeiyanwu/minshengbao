@@ -1,13 +1,16 @@
 <template>
   <div class="Home">
+    <!-- //遮罩 -->
+    <FirstShade />
+
     <BScroll 
       :pullDown="{
         threshold: 50,
         stop: 30
       }" 
       :bounce="{bottom: false}"
-      EType="pullDownReq"
-      @pullDownReq="requireData"
+      pullDownEvName="pullDownReq"
+      @pullDownReq="requireData(false)"
       ref="bs"
     >
       <div class="swiper-container Swiper_nav">
@@ -64,7 +67,7 @@
         <img src="@/assets/img/home/minshengtoutiao.png" alt="minshengtoutiao">
         <div class="scrollText">
           <div class="hot">热点</div>
-          <ScrollText />
+          <ScrollText :STList="STList"/>
         </div>
         <div class="more">
           <router-link to="/Self">更多</router-link>
@@ -108,20 +111,22 @@
 </template>
 
 <script>
-import {ActiveSwiper,NavSwiper} from '@/api/home/home.js'
+import {ActiveSwiper,NavSwiper,STList} from '@/api/home/home.js'
 import ScrollText from "@/components/common/scroll/ScrollText.vue";
 import BScroll from "@/components/common/scroll/BScroll.vue";
 import NavBar from "@/components/common/bar/NavBar.vue"
+import FirstShade from "@/components/home/FirstShade.vue";
 import Swiper from "swiper";
 import "../../node_modules/swiper/css/swiper.min.css";
 import "../../node_modules/swiper/js/swiper.min.js";
 export default {
   name: "Home",
-  components: { ScrollText,BScroll,NavBar },
+  components: { ScrollText,BScroll,NavBar,FirstShade },
   data() {
     return {
       navSwiper: [],
       ActiveSwiper: [],
+      STList: [],
       allTools: [
         {
           url: "/Self",
@@ -233,21 +238,30 @@ export default {
         }
       });
     },
-    requireData(){
+    requireData(auto){
       //两个swiper的数据交互完后再去初始化，避免swiper滚动失败
-      Promise.all([NavSwiper(),ActiveSwiper()]).then(res => {
+      Promise.all([
+        NavSwiper(),
+        ActiveSwiper(),
+        STList()
+      ]).then(res => {
         console.log(res);
-        this.navSwiper = res[0];
-        this.ActiveSwiper = res[1];
-        this.$refs.bs.bs.finishPullDown();
-        this.$nextTick(()=>{
-          this.initSwiper();
-        })
+        [this.navSwiper,this.ActiveSwiper,this.STList] = res;
+        //区别手动和自动请求
+        if(auto){
+          this.$nextTick(() => {
+            this.initSwiper();
+          })
+        }
+        else{
+          this.$refs.bs.bs.finishPullDown();
+          console.log('finishPullDown')
+        }
       });
-    }
+    },
   },
   created () {
-    this.requireData();
+    this.requireData(true);
   },
   mounted(){
   }

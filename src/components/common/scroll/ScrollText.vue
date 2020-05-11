@@ -1,6 +1,8 @@
 <template>
-  <div class="scrollBox" 
+  <div 
+    class="scrollBox" 
     :style="{'width': _width+'px'}"
+    :STList="STList"
     :_width="_width">
     <div 
       :class="{
@@ -22,7 +24,7 @@
   </div>
 </template>
 <script>
-import {STList} from '@/api/home/home.js'
+// import {STList} from '@/api/home/home.js'
 import { setInterval } from 'timers';
 export default {
   name: "ScrollText",
@@ -31,21 +33,24 @@ export default {
       type: Number,
       default: 165
     },
+    STList: Array
   },
   data(){
     return {
       txtList: [],
       index: 0,
-      no_transition: false
+      no_transition: false,
+      timer: null,
+      timer1: null
     }
   },
   methods: {
     scrollHandle(){ 
-      setInterval(() => {
+      this.timer = setInterval(() => {
         this.no_transition = false;
         this.index++;
         //等待最后一个滚动完成后再去复位
-        setTimeout(()=>{
+        this.timer1 = setTimeout(()=>{
           if(this.index==this.txtList.length-1) {
             this.no_transition = true;
             this.index = 0;
@@ -55,12 +60,17 @@ export default {
     }
   },
   created(){
-    STList().then((res) => {
-      this.txtList = [...res, res[0]];
-      if(this.txtList.length > 1) this.scrollHandle(); 
-    })
+    // STList().then((res) => {
+    //   this.txtList = [...res, res[0]];
+    //   if(this.txtList.length > 1) this.scrollHandle(); 
+    // })
   },
-  mounted(){
+  watch: {
+    STList: function () {
+      console.log(this.STList.length)
+     this.txtList = [...this.STList, this.STList[0]];
+      if(this.STList.length>0) this.scrollHandle()
+    }
   }
 }
 </script>

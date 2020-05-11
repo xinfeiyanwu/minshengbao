@@ -5,11 +5,15 @@
         threshold: 50,
         stop: 30
       }"
-      :bounce="true">
+      :bounce="true"
+      pullDownEvName="pullDownReq"
+      @pullDownReq="requireData(false)"
+      ref="bs"
+    >
       <div class="swiper-container Swiper_nav">
         <div class="swiper-wrapper">
           <div 
-            v-for="(item,i) in topBannerData" 
+            v-for="(item,i) in shoppingTopData" 
             :key="i"
             class="swiper-slide"
           >
@@ -65,18 +69,19 @@
       </div>
 
       <template #pullUp>
-        已无更多数据
+        已无更多数据/b
       </template>
     </BScroll>
   </div>
 </template>
 
 <script>
+import {shoppingTopReq,spItemDataReq,spBotDataReq} from '@/api/shopping/shopping'
 import BScroll from "@/components/common/scroll/BScroll.vue";
 import Swiper from 'swiper'
 import '../../node_modules/swiper/js/swiper.min.js'
 import '../../node_modules/swiper/css/swiper.min.css'
-import HeadLine from '@/components/common/HeadLine.vue'
+import HeadLine from '@/components/common/line/HeadLine.vue'
 import { setTimeout } from 'timers';
 export default {
   name: 'Shopping',
@@ -84,32 +89,7 @@ export default {
   data(){
     return {
       url: require('@/assets/img/shopping/swiper-nav.png'),
-      topBannerData: [
-        {
-          url: '/',
-          img: require("@/assets/img/shopping/swiper-nav.png")
-        },
-        {
-          url: '/',
-          img: require("@/assets/img/shopping/swiper-nav.png")
-        },
-        {
-          url: '/',
-          img: require("@/assets/img/shopping/swiper-nav.png")
-        },
-        {
-          url: '/',
-          img: require("@/assets/img/shopping/swiper-nav.png")
-        },
-        {
-          url: '/',
-          img: require("@/assets/img/shopping/swiper-nav.png")
-        },
-        {
-          url: '/',
-          img: require("@/assets/img/shopping/swiper-nav.png")
-        },
-      ],
+      shoppingTopData: [],
       vanGridData: [
         {
           url: "/",
@@ -162,61 +142,8 @@ export default {
           name: "厨房电器"
         },
       ],
-      spItemData: [
-        {
-          url: "/",
-          img:  require("@/assets/img/shopping/shopping.png"),
-          name: "厨房电器"
-        },
-        {
-          url: "/",
-          img:  require("@/assets/img/shopping/shopping.png"),
-          name: "厨房电器"
-        },
-        {
-          url: "/",
-          img:  require("@/assets/img/shopping/shopping.png"),
-          name: "厨房电器"
-        },
-      ],
-      spBotData: [
-        [{
-          url: "/",
-          img: require("@/assets/img/shopping/bottom-shopping.png"),
-          text: "万和热水器万和热水器万和热水器万和热水器万和热水器万和热水器万和",
-          coin: "1899.00"
-        },
-        {
-          url: "/",
-          img: require("@/assets/img/shopping/bottom-shopping.png"),
-          text: "万和热水器万和热水器万和热水器万和热水器万和热水器万和热水器万和",
-          coin: "1899.00"
-        },
-        {
-          url: "/",
-          img: require("@/assets/img/shopping/bottom-shopping.png"),
-          text: "万和热水器万和热水器万和热水器万和热水器万和热水器万和热水器万和",
-          coin: "1899.00"
-        }],
-        [{
-          url: "/",
-          img: require("@/assets/img/shopping/bottom-shopping.png"),
-          text: "万和热水器万和热水器万和热水器万和热水器万和热水器万和热水器万和",
-          coin: "1899.00"
-        },
-        {
-          url: "/",
-          img: require("@/assets/img/shopping/bottom-shopping.png"),
-          text: "万和热水器万和热水器万和热水器万和热水器万和热水器万和热水器万和",
-          coin: "1899.00"
-        },
-        {
-          url: "/",
-          img: require("@/assets/img/shopping/bottom-shopping.png"),
-          text: "万和热水器万和热水器万和热水器万和热水器万和热水器万和热水器万和",
-          coin: "1899.00"
-        }],
-      ]
+      spItemData: [],
+      spBotData: []
     }
   },
   methods: {
@@ -232,8 +159,9 @@ export default {
           disableOnInteraction: false,
         },
         pagination: {
-            el: '.swiper-pagination',
-          },
+          el: '.swiper-pagination',
+        },
+        observer: true
       });
       const Swiper_Bot = new Swiper('.Swiper_Bot',{
         loop:true,
@@ -242,15 +170,34 @@ export default {
           disableOnInteraction: false,
         },
         pagination: {
-            el: '.swiper-pagination',
-          },
+          el: '.swiper-pagination',
+        },
+        observer: true
       });
-    }
+    },
+    requireData(auto){
+      Promise.all([
+        shoppingTopReq(),
+        spItemDataReq(),
+        spBotDataReq()
+      ]).then((res) => {
+        [this.shoppingTopData,this.spItemData,this.spBotData] = res;
+        if(auto){
+          this.$nextTick(() => {
+            this.initSwiper();
+          })
+        }
+        else{
+          this.$refs.bs.bs.finishPullDown();
+          console.log('finishPullDown')
+        }
+      })
+    },
   },
   created(){
+    this.requireData(true);
   },
   mounted(){
-    this.initSwiper()
   }
 }
 </script>

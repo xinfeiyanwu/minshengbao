@@ -2,15 +2,15 @@ import Vue from 'vue'
 import App from './App.vue'
 import '@/unit/index.js'
 import router from './router'
+import store from './store'
 
 //mock
-import '@/mock/home/navSwiper.js'
-import '@/mock/home/ActiveSwiper.js'
-import '@/mock/home/STList.js'
+import './mock'
 
 Vue.config.productionTip = false
 
 new Vue({
   render: h => h(App),
-  router
+  router,
+  store
 }).$mount('#app')

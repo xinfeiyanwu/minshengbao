@@ -5,6 +5,7 @@
     :pullUp="pullUp"
     :bounce="bounce"
     class="BScroll" 
+    :pullDownEvName="pullDownEvName"
     ref="bs">
     <div class="container">
       <div class="pullDown">
@@ -24,6 +25,7 @@
 
 <script>
 import BScroll from 'better-scroll'
+import {mapState} from 'vuex'
 export default {
   name: 'BScroll',
   props: {
@@ -39,11 +41,12 @@ export default {
       type: [Boolean,Object],
       default: false
     },
-    EType: String
+    pullDownEvName: String
   },
   data () {
     return {
       bs: null,
+      prevPosy: 0
     }
   },
   mounted () {
@@ -60,15 +63,20 @@ export default {
       })
 
       this.bs.on('scroll', (ev) => {
-        // console.log(ev);
+        const posy = ev.y;
+        let diff = 0;
+        //往下滑并且上一次的值和这次滑动的值不同
+        if(posy < 0 && this.prevPosy !== posy) {
+          diff = (posy-this.prevPosy)/100;
+          this.prevPosy=posy;
+          this.$store.commit('listenOpa', diff);
+        }
       })
       this.bs.on('pullingDown', (ev) => {
         console.log('pullingDown')
         
-        this.$emit(this.EType);
-        // setTimeout(() => {
-        //   this.bs.finishPullDown();
-        // }, 3000);
+        //利用自定义事件去实现父级获取数据对BScroll进行数据填充
+        this.$emit(this.pullDownEvName);
       })
       this.bs.on('pullingUp', (ev) => {
         console.log('pullingUp')
