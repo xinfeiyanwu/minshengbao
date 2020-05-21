@@ -1,0 +1,44 @@
+{
+  "id": "1829447",
+  "name": "no name",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "14584792",
+      "name": "xitong",
+      "font_class": "xitong",
+      "unicode": "e628",
+      "unicode_decimal": 58920
+    },
+    {
+      "icon_id": "14629368",
+      "name": "uniE98A",
+      "font_class": "uniE98A",
+      "unicode": "e646",
+      "unicode_decimal": 58950
+    },
+    {
+      "icon_id": "14629482",
+      "name": "uniE971",
+      "font_class": "uniE971",
+      "unicode": "e662",
+      "unicode_decimal": 58978
+    },
+    {
+      "icon_id": "14695474",
+      "name": "sweep",
+      "font_class": "sweep",
+      "unicode": "e642",
+      "unicode_decimal": 58946
+    },
+    {
+      "icon_id": "14662356",
+      "name": "bell-regular",
+      "font_class": "bell-regular",
+      "unicode": "e617",
+      "unicode_decimal": 58903
+    }
+  ]
+}

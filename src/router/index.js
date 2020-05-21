@@ -4,8 +4,18 @@ import store from '@/store'
 Vue.use(VueRouter)
 
 const routes = [
+    // {
+    //     path: '/',
+    //     name: 'map',
+    //     component: () => import('@/view/map.vue'),
+    // },
     {
         path: '/',
+        name: 'FirstShade',
+        component: () => import('@/view/FirstShade.vue'),
+    },
+    {
+        path: '/Home',
         name: 'Home',
         component: () => import('@/view/Home.vue'),
     },
@@ -27,7 +37,7 @@ const routes = [
 ]
 
 const router = new VueRouter({
-    mode: 'history',
+    // mode: 'history',
     routes
 })
 

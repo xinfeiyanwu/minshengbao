@@ -41,7 +41,7 @@ export default {
       type: [Boolean,Object],
       default: false
     },
-    pullDownEvName: String
+    pullDownEvName: String,
   },
   data () {
     return {
@@ -63,14 +63,9 @@ export default {
       })
 
       this.bs.on('scroll', (ev) => {
-        const posy = ev.y;
-        let diff = 0;
-        //往下滑并且上一次的值和这次滑动的值不同
-        if(posy < 0 && this.prevPosy !== posy) {
-          diff = (posy-this.prevPosy)/100;
-          this.prevPosy=posy;
-          this.$store.commit('listenOpa', diff);
-        }
+        console.log(ev)
+        const posy = -ev.y;
+        if(posy >= 0 && posy <= 80) this.$store.commit('listenOpa', posy);
       })
       this.bs.on('pullingDown', (ev) => {
         console.log('pullingDown')

@@ -19,7 +19,9 @@ export default {
     },
     methods: {
         hideFirstShade(){
-            this.$store.commit('hideFirstShade')
+            this.$router.replace('/Home');
+            this.$store.commit('hideFirstShade');
+            clearInterval(this.timer);
         }
     },
     created(){
@@ -31,8 +33,9 @@ export default {
     mounted(){
         this.timer = setInterval(() => {
             if(this.downTime==0) {
+                this.$router.replace('/Home')
                 clearInterval(this.timer);
-                this.$store.commit('hideFirstShade')
+                this.$store.commit('hideFirstShade');
                 return ;
             }
             this.downTime--;

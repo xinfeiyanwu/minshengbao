@@ -1,6 +1,18 @@
 <template>
   <div class="Self">
-    <BScroll>
+    <!-- 头部导航 -->
+    <NavBar>
+      <template #default>
+        我的
+      </template>
+      <template #right-nav>
+        <van-icon size="24" class="iconfont icon-uniE98A"></van-icon>
+        <van-icon size="26" class="iconfont icon-bell-regular"></van-icon>
+        <van-icon size="26" class="iconfont icon-xitong"></van-icon>
+      </template>
+    </NavBar>
+
+    <BScroll ref="bs">
       <div class="header"></div>
 
       <div class="user-module">
@@ -62,9 +74,11 @@
 
 <script>
 import BScroll from "@/components/common/scroll/BScroll.vue";
+import NavBar from '@/components/common/bar/NavBar.vue'
+import {navigatorTo} from '@/unit/unit.js'
 export default {
   name: 'Self',
-  components: {BScroll},
+  components: {BScroll,NavBar},
   data(){
     return {
       cellSource: [
@@ -103,23 +117,23 @@ export default {
           icon: require('@/assets/img/self/cell/chat.png'),
           title: '咨询建议',
         },
-      ]
+      ],
+      navigatorTo: navigatorTo  //跳转路由函数
     }
   },
   methods: {
-    navigatorTo(url){
-      console.log(url)
-      this.$router.push(url);
-    },
-  }
+  },
 }
 </script>
 
 
 <style scoped lang="less">
 .Self{
-  height: 100%;
   background-color: #ebebeb;
+  .nav{
+    i{padding-right:10px;}
+  }
+
   .header{
     height: 100px;
     background: #fd9631;
@@ -135,6 +149,8 @@ export default {
       position: absolute;
       top: -8px;
       left: 16px;
+      box-shadow: 0 0 0 5px #ffffff5c;
+      border-radius: 50%;
       img{
         width: 75px;
         height: 75px;

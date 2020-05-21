@@ -1,7 +1,18 @@
 <template>
   <div class="Home">
-    <!-- //遮罩 -->
-    <FirstShade />
+    <!-- 头部导航 -->
+    <NavBar>
+
+      <template #default>
+        民生保
+      </template>
+
+      <template #right-nav>
+        <div class="right-cont">
+         <van-icon name="scan" @click="scanHandle"/>
+        </div>
+      </template>
+    </NavBar>
 
     <BScroll 
       :pullDown="{
@@ -11,13 +22,13 @@
       :bounce="{bottom: false}"
       pullDownEvName="pullDownReq"
       @pullDownReq="requireData(false)"
-      ref="bs"
-    >
+      ref="bs">
+      
       <div class="swiper-container Swiper_nav">
         <div class="swiper-wrapper">
           <div v-for="(item,i) in navSwiper" :key="i" class="swiper-slide">
             <router-link to="/Self">
-              <img :src="item.img" :alt="item.img">
+              <van-image :src="item.img" :alt="item.img" />
             </router-link>
           </div>
         </div>
@@ -27,24 +38,24 @@
         <template v-for="(item,i) in allTools">
           <van-grid-item
             :key="i"
-            v-if="i!==1&&i!==3"
+            v-if="i!==1&&i!==3&&i!==6"
             @click="navigatorTo(item.url)"
             :icon="item.imgurl"
             :text="item.name"
           />
           <van-grid-item
             :key="i"
-            v-else-if="i===1"
+            class="van-grid-24"
+            v-else-if="i===1 || i===6"
             @click="navigatorTo(item.url)"
-            style="flex-basis: 24% !important;"
             :icon="item.imgurl"
             :text="item.name"
           />
           <van-grid-item
+            class="van-grid-16"
             :key="i"
-            v-else
+            v-else-if="i===3"
             @click="navigatorTo(item.url)"
-            style="flex-basis: 16% !important;"
             :icon="item.imgurl"
             :text="item.name"
           />
@@ -64,7 +75,7 @@
       </van-grid>
 
       <div class="frontPage">
-        <img src="@/assets/img/home/minshengtoutiao.png" alt="minshengtoutiao">
+        <van-image src="@/assets/img/home/minshengtoutiao.png" alt="minshengtoutiao" />
         <div class="scrollText">
           <div class="hot">热点</div>
           <ScrollText :STList="STList"/>
@@ -81,7 +92,7 @@
           <div class="swiper-wrapper">
             <div v-for="(item,i) in ActiveSwiper" :key="i" class="swiper-slide">
               <router-link to="/Cart">
-                <img :src="item.img" :alt="item.img">
+                <van-image :src="item.img" :alt="item.img" />
               </router-link>
             </div>
           </div>
@@ -90,15 +101,16 @@
 
       <div class="top-title">
         <h4>热门推荐</h4>
-
         <template v-for="(item, i) in recommend">
           <div class="recommend" :key="i" @click="navigatorTo(item.url)">
-            <img :src="item.imgurl" alt="recommend1">
-            <div class="content">
-              <h5>{{item.h5}}</h5>
-              <p>{{item.p1}}</p>
-              <p>{{item.p2}}</p>
-            </div>
+            <van-skeleton title avatar :row="3" :loading="loading"> 
+              <van-image :src="item.imgurl" alt="recommend1" />
+              <div class="content">
+                <h5>{{item.h5}}</h5>
+                <p>{{item.p1}}</p>
+                <p>{{item.p2}}</p>
+              </div>
+            </van-skeleton>
           </div>
         </template>
       </div>
@@ -107,6 +119,9 @@
         <div class="rainbowBox">专业专注，用心做好每一次服务</div>
       </div>
     </BScroll>
+
+    <!-- 二维码扫描 -->
+    <Scan v-if="scanState"/>
   </div>
 </template>
 
@@ -115,13 +130,15 @@ import {ActiveSwiper,NavSwiper,STList} from '@/api/home/home.js'
 import ScrollText from "@/components/common/scroll/ScrollText.vue";
 import BScroll from "@/components/common/scroll/BScroll.vue";
 import NavBar from "@/components/common/bar/NavBar.vue"
-import FirstShade from "@/components/home/FirstShade.vue";
+import Scan from "@/components/common/plus/Scan.vue";
 import Swiper from "swiper";
 import "../../node_modules/swiper/css/swiper.min.css";
 import "../../node_modules/swiper/js/swiper.min.js";
+import {navigatorTo} from '@/unit/unit.js'
+import { mapState } from 'vuex';
 export default {
   name: "Home",
-  components: { ScrollText,BScroll,NavBar,FirstShade },
+  components: { ScrollText,BScroll,NavBar,Scan },
   data() {
     return {
       navSwiper: [],
@@ -207,12 +224,13 @@ export default {
           p2: "安全无小事，保险保平安"
         }
       ],
+      navigatorTo: navigatorTo,  //跳转路由函数,
+      loading: true
     };
   },
   methods: {
-    navigatorTo (url) {
-      console.log(url);
-      this.$router.push(url);
+    scanHandle(){
+      this.scanState ? this.$store.commit('hiddenScan') : this.$store.commit('showScan')
     },
     initSwiper () {
       const Swiper_nav = new Swiper(".Swiper_nav", {
@@ -251,20 +269,24 @@ export default {
         if(auto){
           this.$nextTick(() => {
             this.initSwiper();
+            this.loading = false;
           })
         }
         else{
           this.$refs.bs.bs.finishPullDown();
+          this.loading = false;
           console.log('finishPullDown')
         }
       });
     },
   },
+  computed: mapState({
+    scanState: (state) => state.conmon.scanState
+  }),
   created () {
     this.requireData(true);
   },
-  mounted(){
-  }
+  mounted(){}
 };
 </script>
 
@@ -272,6 +294,18 @@ export default {
 .Home {
   background-color: #ebebeb;
   overflow: hidden;
+  .nav{
+    .right-nav{
+      .van-icon-scan{
+        margin-right: 10px;
+        padding: 6px;
+        font-size: 25px;
+        background: #22202057;
+        border-radius: 50%;
+        color: #eee7e7;
+      }
+    }
+  }
   .Swiper_nav {
     height: 200px;
   }
@@ -295,6 +329,12 @@ export default {
         padding: 0;
       }
     }
+  }
+  .van-grid-24 {
+    flex-basis: 24% !important;
+  }
+  .van-grid-16 {
+    flex-basis: 16% !important;
   }
 
   .frontPage {
@@ -363,7 +403,7 @@ export default {
       display: flex;
       padding: 20px 0 20px 10px;
       border-bottom: 1px solid #ccc;
-      img {
+      .van-image {
         width: 110px;
       }
       .content {

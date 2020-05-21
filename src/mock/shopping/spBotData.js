@@ -5,37 +5,37 @@ Mock.setup({
 
 const spBotData = [
   [{
-    url: "/",
+    url: "/Home",
     img: require("@/assets/img/shopping/bottom-shopping.png"),
     text: "万和热水器万和热水器万和热水器万和热水器万和热水器万和热水器万和",
     coin: "1899.00"
   },
   {
-    url: "/",
+    url: "/Home",
     img: require("@/assets/img/shopping/bottom-shopping.png"),
     text: "万和热水器万和热水器万和热水器万和热水器万和热水器万和热水器万和",
     coin: "1899.00"
   },
   {
-    url: "/",
+    url: "/Home",
     img: require("@/assets/img/shopping/bottom-shopping.png"),
     text: "万和热水器万和热水器万和热水器万和热水器万和热水器万和热水器万和",
     coin: "1899.00"
   }],
   [{
-    url: "/",
+    url: "/Home",
     img: require("@/assets/img/shopping/bottom-shopping.png"),
     text: "万和热水器万和热水器万和热水器万和热水器万和热水器万和热水器万和",
     coin: "1899.00"
   },
   {
-    url: "/",
+    url: "/Home",
     img: require("@/assets/img/shopping/bottom-shopping.png"),
     text: "万和热水器万和热水器万和热水器万和热水器万和热水器万和热水器万和",
     coin: "1899.00"
   },
   {
-    url: "/",
+    url: "/Home",
     img: require("@/assets/img/shopping/bottom-shopping.png"),
     text: "万和热水器万和热水器万和热水器万和热水器万和热水器万和热水器万和",
     coin: "1899.00"

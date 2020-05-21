@@ -2,6 +2,28 @@ module.exports= {
     publicPath: './',
     outputDir: 'dist',
     assetsDir: 'asset',
+    devServer: {
+        open: process.platform === 'darwin',
+        host: '192.168.101.3',
+        port: 8080,
+        https: false,
+        hotOnly: false,
+        // 查阅 https://github.com/vuejs/vue-docs-zh-cn/blob/master/vue-cli/cli-service.md#配置代理
+        proxy: {
+            '/api': {
+                target: "http://app.rmsdmedia.com",
+                changeOrigin: true,
+                secure: false,
+                pathRewrite: {
+                    "^/api": ""
+                }
+            },
+            '/foo': {
+                target: '<other_url>'
+            }
+        }, // string | Object
+        before: app => {}
+    },
     // css: {
     //     loaderOptions: {
     //         postcss: {

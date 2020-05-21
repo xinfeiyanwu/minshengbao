@@ -1,20 +1,24 @@
 <template>
   <div id="app">
-    <NavBar />
 
-   <router-view class="view"></router-view>
+    <keep-alive><router-view class="view"></router-view></keep-alive>
 
-    <Tabbar />
+    <!-- 底部导航 -->
+    <Tabbar v-if="navState"/>
   </div>
 </template>
 
 <script>
 import '@/assets/css/initCss.css'
+import '@/assets/css/iconfont/iconfont.css'
 import Tabbar from '@/components/common/bar/Tabbar.vue'
-import NavBar from '@/components/common/bar/NavBar.vue'
+import {mapState} from 'vuex'
 export default {
   name: 'App',
-  components: {Tabbar,NavBar}
+  components: {Tabbar},
+  computed: mapState({
+    navState: (state) => state.conmon.navState
+  })
 }
 </script>
 

@@ -24,7 +24,7 @@ export default {
         return {
             tabItem: [
                 {
-                url: '/',
+                url: '/Home',
                 icon: 'home-o',
                 name: '主页'
                 },

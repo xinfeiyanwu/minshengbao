@@ -15,11 +15,13 @@
 
 <script>
 import HeadLine from '@/components/common//line/HeadLine.vue'
+import {navigatorTo} from '@/unit/unit.js'
 export default {
   name: 'Cart',
   components: {HeadLine},
   data(){
     return {
+      navigatorTo: navigatorTo  //跳转路由函数
     }
   },
 }

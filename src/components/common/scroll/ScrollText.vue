@@ -24,7 +24,6 @@
   </div>
 </template>
 <script>
-// import {STList} from '@/api/home/home.js'
 import { setInterval } from 'timers';
 export default {
   name: "ScrollText",
@@ -33,7 +32,8 @@ export default {
       type: Number,
       default: 165
     },
-    STList: Array
+    STList: Array,
+    default: []
   },
   data(){
     return {
@@ -68,7 +68,7 @@ export default {
   watch: {
     STList: function () {
       console.log(this.STList.length)
-     this.txtList = [...this.STList, this.STList[0]];
+      this.txtList = [...this.STList, this.STList[0]];
       if(this.STList.length>0) this.scrollHandle()
     }
   }

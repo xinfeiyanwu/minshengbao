@@ -5,17 +5,17 @@ Mock.setup({
 
 const spItemData = [
     {
-      url: "/",
+      url: "/Home",
       img:  require("@/assets/img/shopping/shopping.png"),
       name: "厨房电器"
     },
     {
-      url: "/",
+      url: "/Home",
       img:  require("@/assets/img/shopping/shopping.png"),
       name: "厨房电器"
     },
     {
-      url: "/",
+      url: "/Home",
       img:  require("@/assets/img/shopping/shopping.png"),
       name: "厨房电器"
     },

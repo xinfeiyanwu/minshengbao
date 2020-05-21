@@ -7,7 +7,10 @@ import {
     PullRefresh,
     Icon,
     Loading,
-    Cell,CellGroup
+    Cell,CellGroup,
+    Search,
+    Uploader ,
+    Skeleton 
   } from 'vant'
   Vue.use(Tabbar)
   Vue.use(TabbarItem)
@@ -19,3 +22,6 @@ import {
   Vue.use(Loading)
   Vue.use(Cell)
   Vue.use(CellGroup)
+  Vue.use(Uploader)
+  Vue.use(Search)
+  Vue.use(Skeleton);

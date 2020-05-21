@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
-import '@/unit/index.js'
+import '@/unit/vant.js'
 import router from './router'
 import store from './store'
 
