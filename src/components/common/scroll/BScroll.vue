@@ -13,7 +13,7 @@
           下拉刷新...
         </slot>
       </div>
-      <slot>滚动的内容</slot>
+      <div class="cont"><slot>滚动的内容</slot></div>
       <div class="pullUp">
         <slot name="pullUp">
           上拉加载...
@@ -63,7 +63,7 @@ export default {
       })
 
       this.bs.on('scroll', (ev) => {
-        console.log(ev)
+        // console.log(ev)
         const posy = -ev.y;
         if(posy >= 0 && posy <= 80) this.$store.commit('listenOpa', posy);
       })
@@ -86,13 +86,22 @@ export default {
 .BScroll{
   height: 100%;
   .container{
+    min-height: 100%;
     .pullDown, .pullUp{
       position: absolute;
       width: 100%;
       line-height: 30px;
     }
+    .pullUp {
+      bottom: 0;
+      transform: translateY(100%)
+    }
     .pullDown{
+      top: 0;
       transform: translateY(-100%)
+    }
+    .cont{
+      height: 100%;
     }
   }
 }

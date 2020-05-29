@@ -9,8 +9,8 @@ import {
     Loading,
     Cell,CellGroup,
     Search,
-    Uploader ,
-    Skeleton 
+    Uploader,
+    Skeleton,
   } from 'vant'
   Vue.use(Tabbar)
   Vue.use(TabbarItem)

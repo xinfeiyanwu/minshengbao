@@ -1,5 +1,5 @@
 <template>
-  <div class="Shopping">
+  <div class="Shopping" ref="shopping">
      <!-- 头部导航 -->
     <NavBar>
        <template #left-nav>
@@ -101,6 +101,7 @@ import '../../node_modules/swiper/css/swiper.min.css'
 import HeadLine from '@/components/common/line/HeadLine.vue'
 import {navigatorTo} from '@/unit/unit.js'
 import { setTimeout } from 'timers';
+import Hammer from 'hammerjs'
 export default {
   name: 'Shopping',
   components: {HeadLine,BScroll,NavBar},

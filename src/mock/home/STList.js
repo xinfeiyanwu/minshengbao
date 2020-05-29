@@ -3,11 +3,16 @@ Mock.setup({
     timeout: '500-1000' // 表示响应时间介于 200 和 600 毫秒之间，默认值是'10-100'。
 })
 
-const STList = [
-    '1民生头条民生头条民生头条民生头条民生头条',
-    '2民生头条民生头条民生头条民生头条民生头条民生头条',
-    '3民生头条民生头条民生头条民生头条民生头条民生头条',
-    '4民生头条民生头条民生头条民生头条民生头条民生头条',
-]
+const Ramdom = Mock.Random;
 
-export default Mock.mock('/home/STList', 'get',STList);
+
+export default Mock.mock('/home/STList', 'get',()=>{
+    const STList = [
+        '1'+Ramdom.csentence(8,20),
+        '2'+Ramdom.csentence(8,20),
+        '3'+Ramdom.csentence(8,20),
+        '4'+Ramdom.csentence(8,20),
+    ]
+
+    return STList;
+});

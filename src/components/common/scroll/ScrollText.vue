@@ -17,6 +17,7 @@
       <div 
         class="van-ellipsis" 
         v-for="(item,i) in txtList" 
+        @click="STDetail"
         :key="i">
         {{item}}
       </div>
@@ -24,7 +25,7 @@
   </div>
 </template>
 <script>
-import { setInterval } from 'timers';
+import { setInterval,clearInterval } from 'timers';
 export default {
   name: "ScrollText",
   props: {
@@ -45,7 +46,9 @@ export default {
     }
   },
   methods: {
-    scrollHandle(){ 
+    scrollHandle () { 
+      clearInterval(this.timer);
+      console.log(1111)
       this.timer = setInterval(() => {
         this.no_transition = false;
         this.index++;
@@ -57,6 +60,9 @@ export default {
           }
         },1000);
       }, 2000);
+    },
+    STDetail () {
+      // this.$emit('STDetailHandle', )
     }
   },
   created(){
@@ -67,7 +73,7 @@ export default {
   },
   watch: {
     STList: function () {
-      console.log(this.STList.length)
+      // console.log(this.STList.length)
       this.txtList = [...this.STList, this.STList[0]];
       if(this.STList.length>0) this.scrollHandle()
     }

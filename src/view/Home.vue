@@ -2,6 +2,14 @@
   <div class="Home">
     <!-- 头部导航 -->
     <NavBar>
+      <template #left-nav>
+        <div class="left-cont">
+         <div class="address">
+           海口
+           <van-icon name="arrow-down" />
+         </div>
+        </div>
+      </template>
 
       <template #default>
         民生保
@@ -9,7 +17,7 @@
 
       <template #right-nav>
         <div class="right-cont">
-         <van-icon name="scan" @click="scanHandle"/>
+         <van-icon class="iconfont icon-sweep" @click="selModule(true)"/>
         </div>
       </template>
     </NavBar>
@@ -28,7 +36,7 @@
         <div class="swiper-wrapper">
           <div v-for="(item,i) in navSwiper" :key="i" class="swiper-slide">
             <router-link to="/Self">
-              <van-image :src="item.img" :alt="item.img" />
+              <img :src="item.img" :alt="item.img" />
             </router-link>
           </div>
         </div>
@@ -75,7 +83,7 @@
       </van-grid>
 
       <div class="frontPage">
-        <van-image src="@/assets/img/home/minshengtoutiao.png" alt="minshengtoutiao" />
+        <img src="@/assets/img/home/minshengtoutiao.png" alt="minshengtoutiao" />
         <div class="scrollText">
           <div class="hot">热点</div>
           <ScrollText :STList="STList"/>
@@ -92,7 +100,7 @@
           <div class="swiper-wrapper">
             <div v-for="(item,i) in ActiveSwiper" :key="i" class="swiper-slide">
               <router-link to="/Cart">
-                <van-image :src="item.img" :alt="item.img" />
+                <img :src="item.img" :alt="item.img" />
               </router-link>
             </div>
           </div>
@@ -102,13 +110,12 @@
       <div class="top-title">
         <h4>热门推荐</h4>
         <template v-for="(item, i) in recommend">
-          <div class="recommend" :key="i" @click="navigatorTo(item.url)">
+          <div class="recommend" :key="i" @click="showSidePage(item.url)">
             <van-skeleton title avatar :row="3" :loading="loading"> 
-              <van-image :src="item.imgurl" alt="recommend1" />
+              <van-image :src="item.imgurl" alt="recommend" />
               <div class="content">
                 <h5>{{item.h5}}</h5>
-                <p>{{item.p1}}</p>
-                <p>{{item.p2}}</p>
+                <p class="van-multi-ellipsis--l2">{{item.p}}</p>
               </div>
             </van-skeleton>
           </div>
@@ -122,6 +129,25 @@
 
     <!-- 二维码扫描 -->
     <Scan v-if="scanState"/>
+
+    <!-- 二维码弹窗 -->
+    <Dialog v-if="show" @showHandle="selModule">
+      <ul>
+        <li @click="scanHandle"><van-icon class="iconfont icon-sweep" /> 扫一扫</li>
+        <li><van-icon class="iconfont icon-bell-regular" /> 消息</li>
+      </ul>
+    </Dialog>
+    
+    <SidePage 
+      v-if="SidePage" 
+      :SidePageShow="SidePageShow" 
+      :nav="{
+        title: '保险业务',
+        rightWord: '保单查询'
+      }"
+      @resetShowHandle="SidePageShow = false">
+      fsdfsdf
+      </SidePage>
   </div>
 </template>
 
@@ -131,6 +157,8 @@ import ScrollText from "@/components/common/scroll/ScrollText.vue";
 import BScroll from "@/components/common/scroll/BScroll.vue";
 import NavBar from "@/components/common/bar/NavBar.vue"
 import Scan from "@/components/common/plus/Scan.vue";
+import SidePage from "@/components/common/sidePage/SidePage.vue";
+import Dialog from "@/components/common/dialog/Dialog.vue";
 import Swiper from "swiper";
 import "../../node_modules/swiper/css/swiper.min.css";
 import "../../node_modules/swiper/js/swiper.min.js";
@@ -138,12 +166,13 @@ import {navigatorTo} from '@/unit/unit.js'
 import { mapState } from 'vuex';
 export default {
   name: "Home",
-  components: { ScrollText,BScroll,NavBar,Scan },
+  components: { ScrollText,BScroll,NavBar,Scan,Dialog,SidePage },
   data() {
     return {
       navSwiper: [],
       ActiveSwiper: [],
       STList: [],
+      //全部工具
       allTools: [
         {
           url: "/Self",
@@ -186,6 +215,7 @@ export default {
           name: "全部"
         }
       ],
+      //相同工具
       commonTools: [
         {
           url: "/Self",
@@ -208,29 +238,46 @@ export default {
           name: "燃气缴费"
         }
       ],
+      //推荐
       recommend: [
         {
           url: "/Self",
           imgurl: require("../assets/img/home/recommend/recommend1.png"),
-          h5: "民生水保",
-          p1: "安全无小事，保险保平安",
-          p2: "安全无小事，保险保平安"
+          h5: "居民保险",
+          p: "安全无小事，保险保平安",
         },
         {
           url: "/Cart",
-          imgurl: require("../assets/img/home/recommend/recommend1.png"),
-          h5: "民生水保",
-          p1: "安全无小事，保险保平安",
-          p2: "安全无小事，保险保平安"
+          imgurl: require("../assets/img/home/recommend/recommend2.png"),
+          h5: "家具维修",
+          p: "家电维修 修的放心，用的舒心！以最快的速度给您最好的服务",
+        },
+        {
+          url: "/Cart",
+          imgurl: require("../assets/img/home/recommend/recommend3.png"),
+          h5: "店家清洗",
+          p: "高温消毒，杜绝尘螨！明码标价给您最优惠的选择",
         }
       ],
-      navigatorTo: navigatorTo,  //跳转路由函数,
-      loading: true
+      //跳转路由函数,
+      navigatorTo: navigatorTo, 
+      //骨屏架显示 
+      loading: true,  
+      //二维码弹窗
+      show: false,
+      SidePage: false,
+      SidePageShow: true
     };
   },
   methods: {
     scanHandle(){
+      //隐藏scan选择框
+      this.selModule(false);
       this.scanState ? this.$store.commit('hiddenScan') : this.$store.commit('showScan')
+    },
+    selModule(bool){
+      this.show = bool;
+      // console.log(bool)
     },
     initSwiper () {
       const Swiper_nav = new Swiper(".Swiper_nav", {
@@ -256,7 +303,7 @@ export default {
         }
       });
     },
-    requireData(auto){
+    requireData (auto) {
       //两个swiper的数据交互完后再去初始化，避免swiper滚动失败
       Promise.all([
         NavSwiper(),
@@ -279,6 +326,11 @@ export default {
         }
       });
     },
+    showSidePage (url) {
+      if(!this.SidePage) return this.SidePage = true; 
+      this.SidePageShow = true;
+      console.log(this.SidePageShow)
+    }
   },
   computed: mapState({
     scanState: (state) => state.conmon.scanState
@@ -286,7 +338,6 @@ export default {
   created () {
     this.requireData(true);
   },
-  mounted(){}
 };
 </script>
 
@@ -295,11 +346,17 @@ export default {
   background-color: #ebebeb;
   overflow: hidden;
   .nav{
+    .left-nav{
+      .address{
+        background: #1e1e1e80;
+        padding: 4px;
+        border-radius: 4px;
+      }
+    }
     .right-nav{
-      .van-icon-scan{
-        margin-right: 10px;
+      .icon-sweep {
         padding: 6px;
-        font-size: 25px;
+        font-size: 22px;
         background: #22202057;
         border-radius: 50%;
         color: #eee7e7;
@@ -402,19 +459,21 @@ export default {
     .recommend {
       display: flex;
       padding: 20px 0 20px 10px;
+      height: 105px;
       border-bottom: 1px solid #ccc;
       .van-image {
         width: 110px;
       }
       .content {
-        text-align: left;
+        width: calc(100% - 110px);
         padding-left: 20px;
-        h5,
-        p {
-          padding-bottom: 11px;
-        }
+        text-align: left;
         h5 {
+          padding-bottom: 11px;
           font-size: 18px;
+        }
+        p {
+          line-height: 32px;
         }
       }
     }
@@ -446,6 +505,14 @@ export default {
 
   .uploadtext{
     height: 30px;
+  }
+
+  .Dialog{
+    .Dialog-cont{
+      ul li{
+        text-align: left;
+      }
+    }
   }
 }
 </style>

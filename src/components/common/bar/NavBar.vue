@@ -2,14 +2,16 @@
     <div 
         class="nav" 
         :_height="_height"
-        :style="{'height': _height+'px','background-color': 'rgb(253, 150, 49,'+opacity+')'}"> 
-        <div class="left-nav">
-            <slot name="left-nav"></slot>
+        :style="{
+            'height': _height+'px',
+        }"> 
+        <div class="left-nav" :style="{'left': _left}">
+            <slot name="left-nav">&lt;</slot>
         </div>
-        <div class="center" :style="{'opacity': opacity}">
-            <slot></slot>
+        <div class="center" :style="{'opacity': isOpacity?opacity:1}">
+            <div class="cont"><slot></slot></div>
         </div>
-        <div class="right-nav">
+        <div class="right-nav" :style="{'right': _right}">
             <slot name="right-nav"></slot>
         </div>
     </div>
@@ -23,6 +25,18 @@ export default {
         _height: {
             type: Number,
             default: 70
+        },
+        _left: {
+            type: String,
+            default: '10px'
+        },
+        _right: {
+            type: String,
+            default: '10px'
+        },
+        isOpacity: {
+            type: Boolean,
+            default: true
         }
     },
     created(){
@@ -43,25 +57,31 @@ export default {
     align-items: center;
     align-content: center;
     width: 100%;
-    text-align: center;
-    background-color: rgb(253, 150, 49);
-    z-index: 999;
+    text-align: center;    
+    z-index: 900;
     color: #fff;
     .left-nav, .right-nav {
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
-        z-index: 500;
+        z-index: 999;
     }
-    .left-nav {
-        left: 0;
-    }
-    .right-nav {
-        right: 0;
-    }
+    // .left-nav {
+    //     left: 0;
+    // }
+    // .right-nav {
+    //     right: 0;
+    // }
     .center {    
+        display: flex;
+        align-items: center;
+        justify-content: center;
         width: 100%;
-        padding-top: 18px;
+        height: 100%;
+        background: linear-gradient(to right, #f1642c, #ea722b);
+        .cont {
+            padding-top: 15px;
+        }
     }
 }
 </style>
